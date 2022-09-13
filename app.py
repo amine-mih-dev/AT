@@ -19,12 +19,6 @@ with app.app_context():
 def hello():
     return "Dia"
 
-from components.resources import ClientResource
-api.add_resource(ClientResource, '/client')
-
-from components.resources import PromotionResource
-api.add_resource(PromotionResource, '/promotion')
-
 from components.resources import ConventionResource
 api.add_resource(ConventionResource, '/convention')
 
@@ -39,6 +33,14 @@ api.add_resource(CessionResource, '/cession')
 
 from components.resources import HistoryResource
 api.add_resource(HistoryResource, '/history')
+
+
+
+from components.entities import ClientResource
+api.add_resource(ClientResource, '/client')
+
+from components.entities import PromotionResource
+api.add_resource(PromotionResource, '/promotion')
 
 from components.entities import EntityResource
 api.add_resource(EntityResource, '/entity/<int:id>')

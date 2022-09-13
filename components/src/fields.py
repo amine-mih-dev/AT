@@ -72,7 +72,5 @@ history_entity_fields = {
     'namecv': fields.String,
     'numberl': fields.String,
     'street': fields.String,
-    'serv': fields.Integer,
-    'idcs': fields.Integer,
-    'idtr': fields.Integer
+    'serv': fields.Integer
 }
