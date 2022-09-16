@@ -71,17 +71,4 @@ class Cession(db.Model):
     ces = db.Column(db.Integer,db.ForeignKey('client.idc'))
     hisr = db.relationship('History', backref=db.backref('cession', lazy='select'))
                           
-def extract_info_from_db(id):
-    wanted_fields = ['History_id', 'History_date', 'History_idtr', 'History_idcs', 
-                     'Line_numberl', 'Line_street', 'Line_serv', 'Promotion_typepr','Promotion_namepr']
-    
-    # extract the fields from the database by history id
-    query = db.session.query(History.id, History.date, History.idtr, History.idcs,
-                                Line.numberl, Line.street, Line.serv, Promotion.typepr, Promotion.namepr)
-    query = query.join(Line, History.idl == Line.idl)
-    query = query.join(Promotion, History.idp == Promotion.idp)
-    query = query.order_by(History.id)
-    query = query.filter(History.id == id)
-    return query
-
 

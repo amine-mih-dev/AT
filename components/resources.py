@@ -1,8 +1,10 @@
 from flask_restful import Resource, marshal_with
-from models import *
+from models import Convention, History, Line, Cession, Transform
 from extensions import db
-from .src.fields import *
-from .src.args import *
+from .src.fields import   line_fields, convention_fields, history_fields, cession_fields, transform_fields
+from .src.args import post_convention_args, put_convention_args, post_line_args, put_line_args, \
+                        post_history_args, put_history_args, post_cession_args, put_cession_args, \
+                            post_transform_args, put_transform_args
 
 class ConventionResource(Resource):
 
@@ -31,7 +33,7 @@ class ConventionResource(Resource):
         if convention:
             for arg in args:
                 if arg:
-                    setattr(convention, arg, args[arg])
+                    convention.arg = args[arg]
                 db.session.commit()
             response = {'message': 'Convention updated!'}
         else:
@@ -61,9 +63,9 @@ class LineResource(Resource):
         args = post_line_args.parse_args()
         line = Line.query.filter_by(idl=args['idl']).first()
         if line:
-            response = {'message': 'Line already exists!'}
+            response = {'status':'error','message': 'Line already exists!'}
         else:
-            new_line = Line(**args)
+            new_line = Line(**args) #Line(idl = args['idl'], ...)
             db.session.add(new_line)
             db.session.commit()
             response = {'message': 'Line created!'}
@@ -76,7 +78,7 @@ class LineResource(Resource):
         if line:
             for arg in args:
                 if arg:
-                    setattr(line, arg, args[arg])
+                    line.arg = args.arg
                 db.session.commit()
             response = {'message': 'Line updated!'}
         else:
@@ -121,7 +123,7 @@ class HistoryResource(Resource):
         if history:
             for arg in args:
                 if arg:
-                    setattr(history, arg, args[arg])
+                    history.arg = args[arg]
                 db.session.commit()
             response = {'message': 'History updated!'}
         else:
@@ -166,7 +168,7 @@ class TransformResource(Resource):
         if transform:
             for arg in args:
                 if arg:
-                    setattr(transform, arg, args[arg])
+                    transform.arg = args[arg]
                 db.session.commit()
             response = {'message': 'Transform updated!'}
         else:
@@ -211,7 +213,7 @@ class CessionResource(Resource):
         if cession:
             for arg in args:
                 if arg:
-                    setattr(cession, arg, args[arg])
+                    cession.arg = args[arg]
                 db.session.commit()
             response = {'message': 'Cession updated!'}
         else:

@@ -1,22 +1,12 @@
 from flask_restful import Resource, marshal_with
-from models import *
+from models import History, Line, Convention, Promotion, Client
 from extensions import db
-from .src.fields import *
-from .src.args import *
+from .src.fields import history_entity_fields, promotion_fields, client_fields
+from .src.args import put_history_entity_args, post_history_entity_args, put_promotion_args, post_promotion_args, \
+                        put_client_args, post_client_args
 
 
 class EntityResource(Resource):
-    entity_fields = {  
-    'id',
-    'date',
-    'promotion_namepr',
-    'promotion_typepr',
-    'convention_namecv',
-    'line_numberl',
-    'line_street',
-    'line_serv',
-    'cession_idcs',
-}
     @marshal_with(history_entity_fields)
     def get(self, id):
     # extract the fields from the database by history id
@@ -40,7 +30,7 @@ class EntityResource(Resource):
             db.session.commit()
         if args['namepr']:
             promotion_query = db.session.query(Promotion).filter(Promotion.idp == history_query.idp).first()
-            promotion_query.namepr = args.namepr
+            promotion_query.namepr = args['namepr']
             db.session.commit()
         if args['typepr']:
             promotion_query = db.session.query(Promotion).filter(Promotion.idp == history_query.idp).first()
@@ -113,7 +103,8 @@ class PromotionResource(Resource):
 class ClientResource(Resource):
     @marshal_with(client_fields)
     def get(self):
-        client = Client.query.all()
+        args = put_client_args.parse_args()
+        client = Client.query.filter_by(idc=args['idc']).all()
         return client
     
     @marshal_with(client_fields)

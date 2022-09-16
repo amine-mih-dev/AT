@@ -2,14 +2,8 @@ from models import db, Client
 from extensions import *
 
 from flask_restful import fields,Resource, marshal_with,Api ,reqparse
-
-         
+   
 db.init_app(app)
-
-
-
-
-
 
 with app.app_context():
     #db.create_all()
@@ -18,6 +12,8 @@ with app.app_context():
 @app.route('/')
 def hello():
     return "Dia"
+
+
 
 from components.resources import ConventionResource
 api.add_resource(ConventionResource, '/convention')

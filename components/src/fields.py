@@ -61,9 +61,6 @@ client_fields = {
     'email': fields.String,
 }
 
-
-
-
 history_entity_fields = {  
     'id': fields.Integer,
     'date': fields.DateTime,
