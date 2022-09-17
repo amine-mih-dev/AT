@@ -1,10 +1,12 @@
+from extensions import db
 from flask_restful import Resource, marshal_with
 from models import Convention, History, Line, Cession, Transform
-from extensions import db
-from .src.fields import   line_fields, convention_fields, history_fields, cession_fields, transform_fields
-from .src.args import post_convention_args, put_convention_args, post_line_args, put_line_args, \
-                        post_history_args, put_history_args, post_cession_args, put_cession_args, \
-                            post_transform_args, put_transform_args
+
+from src.args import post_convention_args, put_convention_args, post_line_args, put_line_args, \
+    post_history_args, put_history_args, post_cession_args, put_cession_args, \
+    post_transform_args, put_transform_args
+from src.fields import line_fields, convention_fields, history_fields, cession_fields, transform_fields
+
 
 class ConventionResource(Resource):
 
@@ -12,7 +14,7 @@ class ConventionResource(Resource):
     def get(self):
         convention = Convention.query.all()
         return convention
-    
+
     @marshal_with(convention_fields)
     def post(self):
         args = post_convention_args.parse_args()
@@ -25,7 +27,7 @@ class ConventionResource(Resource):
             db.session.commit()
             response = {'message': 'Convention created!'}
         return response
-    
+
     @marshal_with(convention_fields)
     def put(self):
         args = put_convention_args.parse_args()
@@ -39,7 +41,7 @@ class ConventionResource(Resource):
         else:
             response = {'message': 'Convention does not exist!'}
         return response
-    
+
     @marshal_with(convention_fields)
     def delete(self):
         args = put_convention_args.parse_args()
@@ -52,25 +54,26 @@ class ConventionResource(Resource):
             response = {'message': 'Convention does not exist!'}
         return response
 
+
 class LineResource(Resource):
     @marshal_with(line_fields)
     def get(self):
         line = Line.query.all()
         return line
-    
+
     @marshal_with(line_fields)
     def post(self):
         args = post_line_args.parse_args()
         line = Line.query.filter_by(idl=args['idl']).first()
         if line:
-            response = {'status':'error','message': 'Line already exists!'}
+            response = {'status': 'error', 'message': 'Line already exists!'}
         else:
-            new_line = Line(**args) #Line(idl = args['idl'], ...)
+            new_line = Line(**args)  # Line(idl = args['idl'], ...)
             db.session.add(new_line)
             db.session.commit()
             response = {'message': 'Line created!'}
         return response
-    
+
     @marshal_with(line_fields)
     def put(self):
         args = put_line_args.parse_args()
@@ -84,7 +87,7 @@ class LineResource(Resource):
         else:
             response = {'message': 'Line does not exist!'}
         return response
-    
+
     @marshal_with(line_fields)
     def delete(self):
         args = put_line_args.parse_args()
@@ -97,12 +100,13 @@ class LineResource(Resource):
             response = {'message': 'Line does not exist!'}
         return response
 
+
 class HistoryResource(Resource):
     @marshal_with(history_fields)
     def get(self):
         history = History.query.all()
         return history
-    
+
     @marshal_with(history_fields)
     def post(self):
         args = post_history_args.parse_args()
@@ -129,7 +133,7 @@ class HistoryResource(Resource):
         else:
             response = {'message': 'History does not exist!'}
         return response
-    
+
     @marshal_with(history_fields)
     def delete(self):
         args = put_history_args.parse_args()
@@ -142,12 +146,13 @@ class HistoryResource(Resource):
             response = {'message': 'History does not exist!'}
         return response
 
+
 class TransformResource(Resource):
     @marshal_with(transform_fields)
     def get(self):
         transform = Transform.query.all()
         return transform
-    
+
     @marshal_with(transform_fields)
     def post(self):
         args = post_transform_args.parse_args()
@@ -160,7 +165,7 @@ class TransformResource(Resource):
             db.session.commit()
             response = {'message': 'Transform created!'}
         return response
-    
+
     @marshal_with(transform_fields)
     def put(self):
         args = put_transform_args.parse_args()
@@ -174,7 +179,7 @@ class TransformResource(Resource):
         else:
             response = {'message': 'Transform does not exist!'}
         return response
-    
+
     @marshal_with(transform_fields)
     def delete(self):
         args = put_transform_args.parse_args()
@@ -187,12 +192,13 @@ class TransformResource(Resource):
             response = {'message': 'Transform does not exist!'}
         return response
 
+
 class CessionResource(Resource):
     @marshal_with(cession_fields)
     def get(self):
         cession = Cession.query.all()
         return cession
-    
+
     @marshal_with(cession_fields)
     def post(self):
         args = post_cession_args.parse_args()
@@ -205,7 +211,7 @@ class CessionResource(Resource):
             db.session.commit()
             response = {'message': 'Cession created!'}
         return response
-    
+
     @marshal_with(cession_fields)
     def put(self):
         args = put_cession_args.parse_args()
@@ -231,8 +237,3 @@ class CessionResource(Resource):
         else:
             response = {'message': 'Cession does not exist!'}
         return response
-
-
-
-
-

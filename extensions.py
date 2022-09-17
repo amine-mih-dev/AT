@@ -1,5 +1,5 @@
 from flask_restful import Api
-from flask import Flask, jsonify
+from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 
 db = SQLAlchemy()
