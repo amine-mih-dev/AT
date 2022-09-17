@@ -2,9 +2,9 @@ from extensions import db
 from flask_restful import Resource, marshal_with
 from models import History, Line, Convention, Promotion, Client
 
-from src.args import put_history_entity_args, put_promotion_args, post_promotion_args, \
+from .src.args import put_history_entity_args, put_promotion_args, post_promotion_args, \
     put_client_args, post_client_args
-from src.fields import history_entity_fields, promotion_fields, client_fields
+from .src.fields import history_entity_fields, promotion_fields, client_fields
 
 
 class EntityResource(Resource):

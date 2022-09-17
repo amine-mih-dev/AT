@@ -2,10 +2,10 @@ from extensions import db
 from flask_restful import Resource, marshal_with
 from models import Convention, History, Line, Cession, Transform
 
-from src.args import post_convention_args, put_convention_args, post_line_args, put_line_args, \
+from .src.args import post_convention_args, put_convention_args, post_line_args, put_line_args, \
     post_history_args, put_history_args, post_cession_args, put_cession_args, \
     post_transform_args, put_transform_args
-from src.fields import line_fields, convention_fields, history_fields, cession_fields, transform_fields
+from .src.fields import line_fields, convention_fields, history_fields, cession_fields, transform_fields
 
 
 class ConventionResource(Resource):
