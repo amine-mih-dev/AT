@@ -24,6 +24,7 @@ class EntityResource(Resource):
     @marshal_with(history_entity_fields)
     def put(self, id):
         # update the values of database tables by history id
+        # im sure this is a bad practice and theres better ways to do this
         args = put_history_entity_args.parse_args()
         history_query = db.session.query(History).filter(History.id == id).first()
         if args['date']:
