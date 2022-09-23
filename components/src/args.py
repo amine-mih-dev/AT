@@ -1,13 +1,16 @@
 from flask_restful import reqparse
 from datetime import datetime
 
+get_client_args = reqparse.RequestParser()
+get_client_args.add_argument('idc', type=int, help='Client id')
+
 post_client_args = reqparse.RequestParser()
 post_client_args.add_argument("idc", type=int, help="idc is required", required=True)
 post_client_args.add_argument("name", type=str, help="name is required", required=True)
 post_client_args.add_argument("prename", type=str, help="prename is required", required=True)
-post_client_args.add_argument("birthday",type=lambda x: datetime.strptime(x,'%Y-%m-%d'), help="birthday is required", required=True)
+post_client_args.add_argument("birthday",type=lambda x: datetime.strptime(x, '%Y-%m-%d'), help="birthday is required", required=True)
 post_client_args.add_argument("idcard", type=str, help="idcard is required", required=True)
-post_client_args.add_argument("releasecrd", type=lambda x: datetime.strptime(x,'%Y-%m-%d'), help="releasecrd is required", required=True)
+post_client_args.add_argument("releasecrd", type=lambda x: datetime.strptime(x, '%Y-%m-%d'), help="releasecrd is required", required=True)
 post_client_args.add_argument("Phone", type=str, help="Phone is required", required=True)
 post_client_args.add_argument("email", type=str, help="email is required", required=True)
 
@@ -37,6 +40,10 @@ put_line_args.add_argument("street", type=str,  required=False)
 put_line_args.add_argument("date", type=lambda x: datetime.strptime(x,'%Y-%m-%d'), help="Date of the line is required", required=False)
 put_line_args.add_argument("idc", type=int, required=False)
 put_line_args.add_argument("serv", type=int,  required=False)
+
+get_line_args = reqparse.RequestParser()
+get_line_args.add_argument('numberl', type=int, help='Line number')
+get_line_args.add_argument('idc', type=int, help='client id')
 
 post_transform_args = reqparse.RequestParser()
 post_transform_args.add_argument("idt", type=int, help="idt is required", required=True)
@@ -71,6 +78,9 @@ put_history_args.add_argument("idp", type=int,  required=False)
 put_history_args.add_argument("idcv", type=int,  required=False)
 put_history_args.add_argument("idtr", type=int,  required=False)
 put_history_args.add_argument("idcs", type=int,  required=False)
+
+get_history_args = reqparse.RequestParser()
+get_history_args.add_argument("id", type=int, help="id is required", required=True)
 
 post_cession_args = reqparse.RequestParser()
 post_cession_args.add_argument("idcs", type=int, help="idcs is required", required=True)

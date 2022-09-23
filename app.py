@@ -7,6 +7,7 @@ from components.resources import HistoryResource
 from components.entities import ClientResource
 from components.entities import PromotionResource
 from components.entities import EntityResource
+from components.entities import GetEmptyLineNumberl
 
 db.init_app(app)
 
@@ -25,9 +26,11 @@ api.add_resource(LineResource, '/line')
 api.add_resource(TransformResource, '/transform')
 api.add_resource(CessionResource, '/cession')
 api.add_resource(HistoryResource, '/history')
+
 api.add_resource(ClientResource, '/client')
 api.add_resource(PromotionResource, '/promotion')
 api.add_resource(EntityResource, '/entity/<int:id>')
+api.add_resource(GetEmptyLineNumberl, '/empty_number')
 
 if __name__ == "__main__":
     app.run(debug=True)

@@ -184,18 +184,22 @@ URL = 'http://127.0.0.1:5000/'
 
 
 class MyTestCase(unittest.TestCase):
-    def test_client(self):
+    '''    def test_client(self):
         for client in client_test_data:
             r = requests.post(URL + 'client', json=client)
             get_r = requests.get(URL + 'client', json={'idc': client['idc']})
             self.assertEqual(r.status_code, 200)
             self.assertEqual(get_r.status_code, 200)
-            self.assertEqual(get_r.json(), client)
+            self.assertEqual(get_r.json(), client_put_data)
             put_r = requests.put(URL + 'client', json=client_put_data)
             get_r = requests.get(URL + 'client', json={'idc': client_put_data['idc']})
             self.assertEqual(put_r.status_code, 200)
             self.assertEqual(get_r.status_code, 200)
-            self.assertEqual(get_r.json(), client_put_data)
+            self.assertEqual(get_r.json(), client_put_data)'''
+    def test_get_empty_numbers(self):
+        r = requests.get(URL + 'empty_number')
+        self.assertEqual(r.status_code, 200)
+        self.assertEqual(r.json(), [])
 
 
 if __name__ == '__main__':

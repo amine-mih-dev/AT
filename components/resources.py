@@ -1,10 +1,10 @@
-from extensions import db
+from extensions import db, jsonify
 from flask_restful import Resource, marshal_with
 from models import Convention, History, Line, Cession, Transform
 
 from .src.args import post_convention_args, put_convention_args, post_line_args, put_line_args, \
     post_history_args, put_history_args, post_cession_args, put_cession_args, \
-    post_transform_args, put_transform_args
+    post_transform_args, put_transform_args, get_history_args, get_line_args
 from .src.fields import line_fields, convention_fields, history_fields, cession_fields, transform_fields
 
 
@@ -20,23 +20,25 @@ class ConventionResource(Resource):
         args = post_convention_args.parse_args()
         convention = Convention.query.filter_by(idcv=args['idcv']).first()
         if convention:
-            response = {'message': 'Convention already exists!'}
+           return jsonify({'status': 'error', 'message': 'Convention already exists!'})
         else:
             new_convention = Convention(**args)
             db.session.add(new_convention)
             db.session.commit()
-            response = {'message': 'Convention created!'}
-        return response
+            return {'message': 'Convention created!'}
+
 
     @marshal_with(convention_fields)
     def put(self):
         args = put_convention_args.parse_args()
         convention = Convention.query.filter_by(idcv=args['idcv']).first()
         if convention:
-            for arg in args:
-                if arg:
-                    convention.arg = args[arg]
-                db.session.commit()
+            if args['namecv']:
+                convention.namecv = args['namecv']
+            if args['remise']:
+                convention.date = args['remise']
+            db.session.commit()
+
             response = {'message': 'Convention updated!'}
         else:
             response = {'message': 'Convention does not exist!'}
@@ -58,7 +60,8 @@ class ConventionResource(Resource):
 class LineResource(Resource):
     @marshal_with(line_fields)
     def get(self):
-        line = Line.query.all()
+        args = get_line_args.parse_args()
+        line = Line.query.filter_by(idc=args['idc']).first()
         return line
 
     @marshal_with(line_fields)
@@ -77,12 +80,20 @@ class LineResource(Resource):
     @marshal_with(line_fields)
     def put(self):
         args = put_line_args.parse_args()
-        line = Line.query.filter_by(idl=args['idl']).first()
+        line = Line.query.filter_by(numberl=args['numberl']).first()
+
         if line:
-            for arg in args:
-                if arg:
-                    line.arg = args.arg
-                db.session.commit()
+            if args['numberl']:
+                line.numberl = args['numberl']
+            if args['street']:
+                line.street = args['street']
+            if args['date']:
+                line.date = args['date']
+            if args['idc']:
+                line.idc = args['idc']
+            if args['serv']:
+                line.serv = args['serv']
+            db.session.commit()
             response = {'message': 'Line updated!'}
         else:
             response = {'message': 'Line does not exist!'}
@@ -104,7 +115,10 @@ class LineResource(Resource):
 class HistoryResource(Resource):
     @marshal_with(history_fields)
     def get(self):
-        history = History.query.all()
+        args = get_line_args.parse_args()
+        line = Line.query.filter_by(numberl=args['numberl']).first()
+        history = History.query.filter_by(idl=line.idl).all()
+
         return history
 
     @marshal_with(history_fields)
@@ -122,13 +136,26 @@ class HistoryResource(Resource):
 
     @marshal_with(history_fields)
     def put(self):
+
         args = put_history_args.parse_args()
         history = History.query.filter_by(id=args['id']).first()
         if history:
-            for arg in args:
-                if arg:
-                    history.arg = args[arg]
-                db.session.commit()
+            if args['idc']:
+                history.idc = args['idc']
+            if args['idl']:
+                history.idl = args['idl']
+            if args['date']:
+                history.date = args['date']
+            if args['idp']:
+                history.idp = args['idp']
+            if args['idcv']:
+                history.idcv = args['idcv']
+            if args['idtr']:
+                history.idtr = args['idtr']
+            if args['idcs']:
+                history.idcs = args['idcs']
+            db.session.commit()
+
             response = {'message': 'History updated!'}
         else:
             response = {'message': 'History does not exist!'}

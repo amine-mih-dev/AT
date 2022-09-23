@@ -3,8 +3,8 @@ from flask_restful import Resource, marshal_with
 from models import History, Line, Convention, Promotion, Client
 
 from .src.args import put_history_entity_args, put_promotion_args, post_promotion_args, \
-    put_client_args, post_client_args
-from .src.fields import history_entity_fields, promotion_fields, client_fields
+    put_client_args, post_client_args, get_client_args, get_line_args
+from .src.fields import history_entity_fields, promotion_fields, client_fields, line_fields
 
 
 class EntityResource(Resource):
@@ -29,31 +29,23 @@ class EntityResource(Resource):
         history_query = db.session.query(History).filter(History.id == id).first()
         if args['date']:
             history_query.date = args['date']
-            db.session.commit()
+        promotion_query = db.session.query(Promotion).filter(Promotion.idp == history_query.idp).first()
         if args['namepr']:
-            promotion_query = db.session.query(Promotion).filter(Promotion.idp == history_query.idp).first()
             promotion_query.namepr = args['namepr']
-            db.session.commit()
         if args['typepr']:
-            promotion_query = db.session.query(Promotion).filter(Promotion.idp == history_query.idp).first()
             promotion_query.typepr = args.typepr
-            db.session.commit()
         if args['namecv']:
             convention_query = db.session.query(Convention).filter(Convention.idcv == history_query.idcv).first()
             convention_query.namecv = args.namecv
-            db.session.commit()
+        line_query = db.session.query(Line).filter(Line.idl == history_query.idl).first()
         if args['numberl']:
-            line_query = db.session.query(Line).filter(Line.idl == history_query.idl).first()
             line_query.numberl = args.numberl
-            db.session.commit()
         if args['street']:
-            line_query = db.session.query(Line).filter(Line.idl == history_query.idl).first()
             line_query.street = args.street
-            db.session.commit()
         if args['serv']:
-            line_query = db.session.query(Line).filter(Line.idl == history_query.idl).first()
             line_query.serv = args.serv
-            db.session.commit()
+        db.session.commit()
+        return {'message': 'Entity updated!'}
 
 
 class PromotionResource(Resource):
@@ -80,10 +72,14 @@ class PromotionResource(Resource):
         args = put_promotion_args.parse_args()
         promotion = Promotion.query.filter_by(idp=args['idp']).first()
         if promotion:
-            for arg in args:
-                if arg:
-                    promotion.arg = args[arg]
-                db.session.commit()
+            if args['namepr']:
+                promotion.namepr = args['namepr']
+            if args['typepr']:
+                promotion.typepr = args['typepr']
+            if args['mountpr']:
+                promotion.mountpr = args['mountpr']
+            db.session.commit()
+
             response = {'message': 'Promotion updated!'}
         else:
             response = {'message': 'Promotion does not exist!'}
@@ -105,8 +101,8 @@ class PromotionResource(Resource):
 class ClientResource(Resource):
     @marshal_with(client_fields)
     def get(self):
-        args = put_client_args.parse_args()
-        client = Client.query.filter_by(idc=args['idc']).all()
+        args = get_client_args.parse_args()
+        client = Client.query.filter_by(idc=args['idc']).first()
         return client
 
     @marshal_with(client_fields)
@@ -130,14 +126,28 @@ class ClientResource(Resource):
     def put(self):
         args = put_client_args.parse_args()
         client = Client.query.filter_by(idc=args['idc']).first()
+
         if client:
-            for arg in args:
-                if arg:
-                    client.arg = args[arg]
-                db.session.commit()
+            if args['name']:
+                client.name = args['name']
+            if args['prename']:
+                client.prename = args['prename']
+            if args['birthday']:
+                client.birthday = args['birthday']
+            if args['idcard']:
+                client.idcard = args['idcard']
+            if args['releasecrd']:
+                client.releasecrd = args['releasecrd']
+            if args['Phone']:
+                client.Phone = args['Phone']
+            if args['email']:
+                client.email = args['email']
+            db.session.commit()
+
             response = {'message': 'Client updated!'}
         else:
             response = {'message': 'Client does not exist!'}
+        db.session.commit()
         return response
 
     @marshal_with(client_fields)
@@ -151,3 +161,12 @@ class ClientResource(Resource):
         else:
             response = {'message': 'Client does not exist!'}
         return response
+
+
+class GetEmptyLineNumberl(Resource):
+    @marshal_with(line_fields)
+    def get(self):
+        args = get_line_args.parse_args()
+        # get the Line with mo numberl
+        line = Line.query.filter_by(numberl=None).all()
+        return line

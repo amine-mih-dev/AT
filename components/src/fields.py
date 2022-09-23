@@ -1,11 +1,18 @@
 from flask_restful import fields
 
 # define the fields to be returned in the json response
+
+
+class MyDateFormat(fields.Raw):
+    def format(self, value):
+        return value.strftime('%Y-%m-%d')
+
+
 history_fields = {
     'id': fields.Integer,
     'idc': fields.Integer,
     'idl': fields.Integer,
-    'date': fields.DateTime,
+    'date': MyDateFormat,
     'idp': fields.Integer,
     'idcv': fields.Integer,
     'idtr': fields.Integer,
@@ -54,9 +61,9 @@ client_fields = {
     'idc': fields.Integer,
     'name': fields.String,
     'prename': fields.String,
-    'birthday': fields.DateTime,
+    'birthday': MyDateFormat,
     'idcard': fields.String,
-    'releasecrd': fields.DateTime,
+    'releasecrd': MyDateFormat,
     'Phone': fields.String,
     'email': fields.String,
 }
