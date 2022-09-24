@@ -168,5 +168,5 @@ class GetEmptyLineNumberl(Resource):
     def get(self):
         args = get_line_args.parse_args()
         # get the Line with mo numberl
-        line = Line.query.filter_by(numberl=None).all()
+        line = Line.query.filter_by(numberl='empty').all()
         return line
