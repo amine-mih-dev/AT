@@ -34,16 +34,13 @@ post_line_args.add_argument("idc", type=int, help="Id of the client is required"
 post_line_args.add_argument("serv", type=int, help="Service of the line is required", required=True)
 
 put_line_args = reqparse.RequestParser()
-put_line_args.add_argument("idl", type=int, help="idl is required", required=True)
+put_line_args.add_argument("idl", type=int, help="idl is required", required=False)
 put_line_args.add_argument("numberl", type=str,  required=False)
 put_line_args.add_argument("street", type=str,  required=False)
 put_line_args.add_argument("date", type=lambda x: datetime.strptime(x,'%Y-%m-%d'), help="Date of the line is required", required=False)
 put_line_args.add_argument("idc", type=int, required=False)
 put_line_args.add_argument("serv", type=int,  required=False)
 
-get_line_args = reqparse.RequestParser()
-get_line_args.add_argument('numberl', type=int, help='Line number')
-get_line_args.add_argument('idc', type=int, help='client id')
 
 post_transform_args = reqparse.RequestParser()
 post_transform_args.add_argument("idt", type=int, help="idt is required", required=True)

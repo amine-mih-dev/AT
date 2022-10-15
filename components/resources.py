@@ -4,7 +4,7 @@ from models import Convention, History, Line, Cession, Transform
 
 from .src.args import post_convention_args, put_convention_args, post_line_args, put_line_args, \
     post_history_args, put_history_args, post_cession_args, put_cession_args, \
-    post_transform_args, put_transform_args, get_history_args, get_line_args
+    post_transform_args, put_transform_args, get_line_args, put_line_args
 from .src.fields import line_fields, convention_fields, history_fields, cession_fields, transform_fields
 
 
@@ -198,9 +198,15 @@ class TransformResource(Resource):
         args = put_transform_args.parse_args()
         transform = Transform.query.filter_by(idt=args['idt']).first()
         if transform:
-            for arg in args:
-                if arg:
-                    transform.arg = args[arg]
+            if args['idt']:
+                transform.idt = args['idt']
+            if args['street1']:
+                transform.street1 = args['street1']
+            if args['street2']:
+                transform.street2 = args['street2']
+            if args['date']:
+                transform.date = args['date']
+
                 db.session.commit()
             response = {'message': 'Transform updated!'}
         else:
@@ -244,9 +250,15 @@ class CessionResource(Resource):
         args = put_cession_args.parse_args()
         cession = Cession.query.filter_by(idcs=args['idcs']).first()
         if cession:
-            for arg in args:
-                if arg:
-                    cession.arg = args[arg]
+            if args['idcs']:
+                cession.idcs = args['idcs']
+            if args['date']:
+                cession.date = args['date']
+            if args['idl']:
+                cession.idl = args['idl']
+            if args['ces']:
+                cession.ces = args['ces']
+            
                 db.session.commit()
             response = {'message': 'Cession updated!'}
         else:

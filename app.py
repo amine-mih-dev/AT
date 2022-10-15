@@ -32,5 +32,6 @@ api.add_resource(PromotionResource, '/promotion')
 api.add_resource(EntityResource, '/entity/<int:id>')
 api.add_resource(GetEmptyLineNumberl, '/empty_number')
 
+
 if __name__ == "__main__":
     app.run(debug=True)

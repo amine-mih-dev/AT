@@ -15,6 +15,7 @@ class Client(db.Model):
     line_c = db.relationship('Line', backref=db.backref('client', lazy='select'))
     ces1 = db.relationship('Cession', backref=db.backref('client', lazy='select'))
     hisr = db.relationship('History', backref=db.backref('client', lazy='select'))
+    
 
 
 # 2-PROMOTION

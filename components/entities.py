@@ -3,7 +3,7 @@ from flask_restful import Resource, marshal_with
 from models import History, Line, Convention, Promotion, Client
 
 from .src.args import put_history_entity_args, put_promotion_args, post_promotion_args, \
-    put_client_args, post_client_args, get_client_args, get_line_args
+    put_client_args, post_client_args, get_client_args, put_line_args
 from .src.fields import history_entity_fields, promotion_fields, client_fields, line_fields
 
 
@@ -166,7 +166,10 @@ class ClientResource(Resource):
 class GetEmptyLineNumberl(Resource):
     @marshal_with(line_fields)
     def get(self):
-        args = get_line_args.parse_args()
+        args = put_line_args.parse_args()
         # get the Line with mo numberl
         line = Line.query.filter_by(numberl='empty').all()
-        return line
+        if line:
+            return line
+        else:
+            return {'status': 'error', 'message': 'Line does not exist!'}
